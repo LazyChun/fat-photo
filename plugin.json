@@ -26,5 +26,8 @@
     "entry": "backend/main.py",
     "requirements": "backend/requirements.txt",
     "depsStrategy": "vendor"
+  },
+  "engines": {
+    "fat-notes": ">=0.1.0"
   }
 }
