@@ -1,0 +1,15 @@
+export default {
+  "common.ok": "Ok",
+  "common.cancel": "Cancel",
+  "common.save": "Save",
+  "common.refresh": "Refresh",
+  "common.close": "Close",
+  "common.back": "Back",
+  "common.new": "Create",
+  "common.create": "Create",
+  "common.edit": "Edit",
+  "common.delete": "Delete",
+  "common.all": "All",
+  "menu.home": "Home",
+  "photo.title": "Fat Photo",
+};

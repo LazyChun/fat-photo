@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片编辑器</title>
+    <style id="theme-vars">
+/* Photo Editor — VSCode Light Theme */
+:root {
+  /* Brand prefix: pe */
+  --pe-background: #FFFFFF;
+  --pe-foreground: #333333;
+  --pe-card: #F3F3F3;
+  --pe-card-foreground: #1E1E1E;
+  --pe-popover: #FFFFFF;
+  --pe-popover-foreground: #1E1E1E;
+  --pe-primary: #0078D4;
+  --pe-primary-foreground: #FFFFFF;
+  --pe-muted: #E8E8E8;
+  --pe-muted-foreground: #616161;
+  --pe-border: #E0E0E0;
+  --pe-input: #F3F3F3;
+  --pe-ring: #0078D4;
+  --pe-radius-sm: 2px;
+  --pe-radius-md: 4px;
+  --pe-radius-lg: 6px;
+
+  /* Editor chrome */
+  --pe-activitybar: #2C2C2C;
+  --pe-activitybar-fg: #FFFFFF;
+  --pe-activitybar-active: #FFFFFF;
+  --pe-sidebar: #F3F3F3;
+  --pe-sidebar-fg: #333333;
+  --pe-sidebar-border: #E0E0E0;
+  --pe-tab-active-bg: #FFFFFF;
+  --pe-tab-inactive-bg: #ECECEC;
+  --pe-tab-active-fg: #333333;
+  --pe-tab-inactive-fg: #808080;
+  --pe-tab-border: #E0E0E0;
+  --pe-statusbar: #007ACC;
+  --pe-statusbar-fg: #FFFFFF;
+  --pe-titlebar: #DDDDDD;
+  --pe-titlebar-fg: #333333;
+  --pe-panel-header: #E8E8E8;
+  --pe-panel-header-fg: #333333;
+  --pe-toolbar-bg: #F8F8F8;
+  --pe-toolbar-border: #E0E0E0;
+  --pe-canvas-bg: #E0E0E0;
+  --pe-canvas-checkerboard-a: #FFFFFF;
+  --pe-canvas-checkerboard-b: #E8E8E8;
+  --pe-selection: #ADD6FF;
+  --pe-selection-border: #0078D4;
+  --pe-hover: rgba(0, 120, 212, 0.08);
+  --pe-active: rgba(0, 120, 212, 0.15);
+  --pe-badge: #0078D4;
+  --pe-badge-fg: #FFFFFF;
+  --pe-scrollbar-thumb: rgba(121, 121, 121, 0.4);
+  --pe-scrollbar-track: transparent;
+  --pe-focus-border: #0078D4;
+  --pe-widget-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.12);
+  --pe-menu-bg: #FFFFFF;
+  --pe-menu-border: #E0E0E0;
+  --pe-menu-hover: #E8E8E8;
+  --pe-menu-separator: #E0E0E0;
+  --pe-input-border: #E0E0E0;
+  --pe-input-focus-border: #0078D4;
+  --pe-slider-track: #E0E0E0;
+  --pe-slider-thumb: #0078D4;
+  --pe-swatch-border: #C0C0C0;
+  --pe-icon-color: #616161;
+  --pe-icon-active-color: #0078D4;
+  --pe-danger: #D32F2F;
+  --pe-warning: #E8A317;
+  --pe-success: #388E3C;
+  --pe-info: #0078D4;
+
+  /* Typography */
+  --pe-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', Roboto, Helvetica, Arial, sans-serif;
+  --pe-font-mono: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', monospace;
+  --pe-font-size-xs: 10px;
+  --pe-font-size-sm: 11px;
+  --pe-font-size-base: 12px;
+  --pe-font-size-md: 13px;
+  --pe-font-size-lg: 14px;
+  --pe-font-size-xl: 16px;
+  --pe-font-size-2xl: 20px;
+  --pe-line-height-tight: 1.2;
+  --pe-line-height-normal: 1.4;
+}
+
+.semantic-token-fallback {
+  --background: var(--pe-background);
+  --foreground: var(--pe-foreground);
+  --card: var(--pe-card);
+  --card-foreground: var(--pe-card-foreground);
+  --popover: var(--pe-popover);
+  --popover-foreground: var(--pe-popover-foreground);
+  --primary: var(--pe-primary);
+  --primary-foreground: var(--pe-primary-foreground);
+  --muted: var(--pe-muted);
+  --muted-foreground: var(--pe-muted-foreground);
+  --border: var(--pe-border);
+  --input: var(--pe-input);
+  --ring: var(--pe-ring);
+  --radius-sm: var(--pe-radius-sm);
+  --radius-md: var(--pe-radius-md);
+  --radius-lg: var(--pe-radius-lg);
+}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--pe-background);
+    --color-foreground: var(--pe-foreground);
+    --color-card: var(--pe-card);
+    --color-card-foreground: var(--pe-card-foreground);
+    --color-popover: var(--pe-popover);
+    --color-popover-foreground: var(--pe-popover-foreground);
+    --color-primary: var(--pe-primary);
+    --color-primary-foreground: var(--pe-primary-foreground);
+    --color-muted: var(--pe-muted);
+    --color-muted-foreground: var(--pe-muted-foreground);
+    --color-border: var(--pe-border);
+    --color-input: var(--pe-input);
+    --color-ring: var(--pe-ring);
+    --color-sidebar: var(--pe-sidebar);
+    --radius-sm: var(--pe-radius-sm);
+    --radius-md: var(--pe-radius-md);
+    --radius-lg: var(--pe-radius-lg);
+  }
+  @layer base {
+    body { background: var(--pe-background); color: var(--pe-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--pe-background); }
+      .text-background { color: var(--pe-background); }
+      .border-background { border-color: var(--pe-background); }
+      .ring-background { --tw-ring-color: var(--pe-background); }
+      .bg-foreground { background-color: var(--pe-foreground); }
+      .text-foreground { color: var(--pe-foreground); }
+      .border-foreground { border-color: var(--pe-foreground); }
+      .ring-foreground { --tw-ring-color: var(--pe-foreground); }
+      .bg-card { background-color: var(--pe-card); }
+      .text-card { color: var(--pe-card); }
+      .border-card { border-color: var(--pe-card); }
+      .ring-card { --tw-ring-color: var(--pe-card); }
+      .bg-card-foreground { background-color: var(--pe-card-foreground); }
+      .text-card-foreground { color: var(--pe-card-foreground); }
+      .border-card-foreground { border-color: var(--pe-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--pe-card-foreground); }
+      .bg-popover { background-color: var(--pe-popover); }
+      .text-popover { color: var(--pe-popover); }
+      .border-popover { border-color: var(--pe-popover); }
+      .ring-popover { --tw-ring-color: var(--pe-popover); }
+      .bg-popover-foreground { background-color: var(--pe-popover-foreground); }
+      .text-popover-foreground { color: var(--pe-popover-foreground); }
+      .border-popover-foreground { border-color: var(--pe-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--pe-popover-foreground); }
+      .bg-primary { background-color: var(--pe-primary); }
+      .text-primary { color: var(--pe-primary); }
+      .border-primary { border-color: var(--pe-primary); }
+      .ring-primary { --tw-ring-color: var(--pe-primary); }
+      .bg-primary-foreground { background-color: var(--pe-primary-foreground); }
+      .text-primary-foreground { color: var(--pe-primary-foreground); }
+      .border-primary-foreground { border-color: var(--pe-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--pe-primary-foreground); }
+      .bg-muted { background-color: var(--pe-muted); }
+      .text-muted { color: var(--pe-muted); }
+      .border-muted { border-color: var(--pe-muted); }
+      .ring-muted { --tw-ring-color: var(--pe-muted); }
+      .bg-muted-foreground { background-color: var(--pe-muted-foreground); }
+      .text-muted-foreground { color: var(--pe-muted-foreground); }
+      .border-muted-foreground { border-color: var(--pe-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--pe-muted-foreground); }
+      .bg-border { background-color: var(--pe-border); }
+      .text-border { color: var(--pe-border); }
+      .border-border { border-color: var(--pe-border); }
+      .ring-border { --tw-ring-color: var(--pe-border); }
+      .bg-input { background-color: var(--pe-input); }
+      .text-input { color: var(--pe-input); }
+      .border-input { border-color: var(--pe-input); }
+      .ring-input { --tw-ring-color: var(--pe-input); }
+      .bg-ring { background-color: var(--pe-ring); }
+      .text-ring { color: var(--pe-ring); }
+      .border-ring { border-color: var(--pe-ring); }
+      .ring-ring { --tw-ring-color: var(--pe-ring); }
+      .bg-sidebar { background-color: var(--pe-sidebar); }
+      .text-sidebar { color: var(--pe-sidebar); }
+      .border-sidebar { border-color: var(--pe-sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--pe-sidebar); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="h-screen overflow-hidden font-sans antialiased" style="margin:0;font-family:var(--pe-font-sans);">
+
+<style>
+  /* ---- Tool Strip Buttons (horizontal toolbar in left sidebar) ---- */
+  .tool-strip-btn {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; border-radius: var(--pe-radius-sm);
+    cursor: pointer; color: var(--pe-icon-color);
+    transition: background 0.1s, color 0.1s;
+  }
+  .tool-strip-btn:hover { background: var(--pe-hover); color: var(--pe-icon-active-color); }
+  .tool-strip-btn.active { background: var(--pe-active); color: var(--pe-icon-active-color); }
+
+  /* ---- Tool Strip Zoom Buttons (smaller variant) ---- */
+  .tool-strip-zoom {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; border-radius: var(--pe-radius-sm);
+    cursor: pointer; color: var(--pe-icon-color);
+    transition: background 0.1s, color 0.1s;
+  }
+  .tool-strip-zoom:hover { background: var(--pe-hover); color: var(--pe-icon-active-color); }
+
+  /* ---- Layer Items ---- */
+  .layer-item {
+    height: 36px; display: flex; align-items: center; gap: 6px;
+    padding: 0 8px; cursor: pointer;
+    border-left: 2px solid transparent;
+    border-bottom: 1px solid var(--pe-sidebar-border);
+    transition: background 0.1s;
+  }
+  .layer-item:hover { background: var(--pe-hover); }
+  .layer-item.active-layer {
+    border-left-color: var(--pe-primary);
+    background: var(--pe-hover);
+  }
+  .layer-thumb {
+    width: 28px; height: 28px; border-radius: var(--pe-radius-sm); flex-shrink: 0;
+    border: 1px solid var(--pe-swatch-border);
+  }
+  .layer-name {
+    flex: 1; font-size: var(--pe-font-size-md); color: var(--pe-sidebar-fg);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .layer-icon-btn {
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; cursor: pointer;
+    color: var(--pe-muted-foreground); opacity: 0.7; flex-shrink: 0;
+  }
+  .layer-icon-btn:hover { opacity: 1; color: var(--pe-icon-active-color); }
+  .layer-icon-btn.hidden-eye { opacity: 0.3; }
+
+  /* ---- History Items ---- */
+  .history-item {
+    height: 26px; display: flex; align-items: center; gap: 6px;
+    padding: 0 10px; cursor: pointer;
+    border-bottom: 1px solid var(--pe-sidebar-border);
+    transition: background 0.1s;
+  }
+  .history-item:hover { background: var(--pe-hover); }
+  .history-item.current-state {
+    background: var(--pe-active);
+    color: var(--pe-icon-active-color);
+  }
+  .history-step {
+    font-size: var(--pe-font-size-sm); color: var(--pe-muted-foreground);
+    min-width: 18px; text-align: right; font-family: var(--pe-font-mono);
+  }
+  .history-item.current-state .history-step { color: var(--pe-icon-active-color); }
+  .history-label {
+    font-size: var(--pe-font-size-md); color: var(--pe-sidebar-fg);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .history-item.current-state .history-label { color: var(--pe-icon-active-color); font-weight: 500; }
+
+  /* ---- Property Section ---- */
+  .prop-section {
+    border-bottom: 1px solid var(--pe-sidebar-border);
+  }
+  .prop-section-header {
+    height: 26px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 10px; background: var(--pe-panel-header);
+    border-bottom: 1px solid var(--pe-sidebar-border);
+    cursor: pointer; user-select: none;
+  }
+  .prop-section-header span {
+    font-size: var(--pe-font-size-md); font-weight: 600; color: var(--pe-panel-header-fg);
+  }
+  .prop-section-content { padding: 8px 10px; }
+  .prop-row {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+  }
+  .prop-row:last-child { margin-bottom: 0; }
+  .prop-label {
+    font-size: var(--pe-font-size-sm); color: var(--pe-muted-foreground);
+    min-width: 28px; text-align: right; flex-shrink: 0;
+  }
+  .prop-value {
+    font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+    min-width: 32px; font-family: var(--pe-font-mono);
+  }
+  .prop-input {
+    width: 56px; height: 20px; font-size: var(--pe-font-size-sm);
+    font-family: var(--pe-font-mono); color: var(--pe-foreground);
+    background: var(--pe-background); border: 1px solid var(--pe-input-border);
+    border-radius: var(--pe-radius-sm); padding: 0 4px; outline: none;
+    text-align: right;
+  }
+  .prop-input:focus { border-color: var(--pe-input-focus-border); }
+  .prop-select {
+    height: 20px; font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+    background: var(--pe-background); border: 1px solid var(--pe-input-border);
+    border-radius: var(--pe-radius-sm); padding: 0 2px; outline: none;
+    cursor: pointer;
+  }
+  .prop-select:focus { border-color: var(--pe-input-focus-border); }
+  .prop-link-btn {
+    font-size: var(--pe-font-size-sm); color: var(--pe-icon-active-color);
+    background: none; border: none; cursor: pointer; text-decoration: none;
+    padding: 0 2px;
+  }
+  .prop-link-btn:hover { text-decoration: underline; }
+
+  /* ---- Range Slider ---- */
+  .pe-range {
+    -webkit-appearance: none; appearance: none;
+    height: 4px; background: var(--pe-slider-track); border-radius: 2px;
+    outline: none; cursor: pointer;
+  }
+  .pe-range::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--pe-slider-thumb); border: none; cursor: pointer;
+  }
+  .pe-range::-moz-range-thumb {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--pe-slider-thumb); border: none; cursor: pointer;
+  }
+
+  /* ---- Toolbar Range (compact) ---- */
+  .toolbar-range {
+    -webkit-appearance: none; appearance: none;
+    height: 3px; background: var(--pe-slider-track); border-radius: 1px;
+    outline: none; cursor: pointer;
+  }
+  .toolbar-range::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--pe-slider-thumb); border: none; cursor: pointer;
+  }
+  .toolbar-range::-moz-range-thumb {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--pe-slider-thumb); border: none; cursor: pointer;
+  }
+
+  /* ---- Checkerboard Canvas ---- */
+  .checkerboard-bg {
+    background-color: var(--pe-canvas-checkerboard-b);
+    background-image:
+      linear-gradient(45deg, var(--pe-canvas-checkerboard-a) 25%, transparent 25%, transparent 75%, var(--pe-canvas-checkerboard-a) 75%),
+      linear-gradient(45deg, var(--pe-canvas-checkerboard-a) 25%, transparent 25%, transparent 75%, var(--pe-canvas-checkerboard-a) 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 8px 8px;
+  }
+
+  /* ---- Selection Rectangle ---- */
+  .selection-rect {
+    position: absolute;
+    border: 1px dashed var(--pe-selection-border);
+    background: var(--pe-selection);
+    animation: march 0.6s linear infinite;
+  }
+  @keyframes march {
+    to { border-dash-offset: 16px; }
+  }
+  .sel-handle {
+    position: absolute; width: 7px; height: 7px;
+    background: #FFFFFF; border: 1px solid var(--pe-selection-border);
+  }
+
+  /* ---- Ruler ---- */
+  .ruler-h, .ruler-v {
+    position: relative; overflow: hidden;
+    background: #D4D4D4;
+  }
+  .ruler-h { border-bottom: 1px solid var(--pe-sidebar-border); }
+  .ruler-v { border-right: 1px solid var(--pe-sidebar-border); }
+  .ruler-ticks-h {
+    position: absolute; top: 0; left: 20px; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      to right,
+      rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px,
+      transparent 1px, transparent 50px
+    );
+  }
+  .ruler-ticks-h-fine {
+    position: absolute; top: 8px; left: 20px; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      to right,
+      rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px,
+      transparent 1px, transparent 10px
+    );
+  }
+  .ruler-ticks-v {
+    position: absolute; top: 20px; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px,
+      transparent 1px, transparent 50px
+    );
+  }
+  .ruler-ticks-v-fine {
+    position: absolute; top: 20px; left: 8px; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px,
+      transparent 1px, transparent 10px
+    );
+  }
+  .ruler-num {
+    position: absolute; font-size: 8px; color: var(--pe-muted-foreground);
+    font-family: var(--pe-font-mono); user-select: none; pointer-events: none;
+  }
+
+  /* ---- Menu Items ---- */
+  .menu-item {
+    font-size: var(--pe-font-size-md); color: var(--pe-titlebar-fg);
+    padding: 2px 8px; border-radius: var(--pe-radius-sm); cursor: pointer;
+    user-select: none; transition: background 0.1s;
+  }
+  .menu-item:hover { background: var(--pe-hover); }
+
+  /* ---- Tab close btn ---- */
+  .tab-close-btn {
+    width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; border-radius: var(--pe-radius-sm);
+    cursor: pointer; opacity: 0;
+    transition: opacity 0.1s, background 0.1s;
+  }
+  .tab-close-btn:hover { background: var(--pe-muted); }
+  .tab-row:hover .tab-close-btn { opacity: 1; }
+
+  /* ---- Toolbar icon button ---- */
+  .tb-icon-btn {
+    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; border-radius: var(--pe-radius-sm);
+    cursor: pointer; color: var(--pe-icon-color);
+    transition: background 0.1s, color 0.1s;
+  }
+  .tb-icon-btn:hover { background: var(--pe-hover); color: var(--pe-icon-active-color); }
+
+  /* ---- Scrollbar ---- */
+  .pe-scroll::-webkit-scrollbar { width: 8px; }
+  .pe-scroll::-webkit-scrollbar-track { background: var(--pe-scrollbar-track); }
+  .pe-scroll::-webkit-scrollbar-thumb { background: var(--pe-scrollbar-thumb); border-radius: 4px; }
+  .pe-scroll::-webkit-scrollbar-thumb:hover { background: rgba(121,121,121,0.6); }
+  .pe-scroll { scrollbar-width: thin; scrollbar-color: var(--pe-scrollbar-thumb) var(--pe-scrollbar-track); }
+
+  /* ---- Sidebar toolbar select ---- */
+  .sb-select {
+    height: 18px; font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+    background: var(--pe-background); border: 1px solid var(--pe-input-border);
+    border-radius: var(--pe-radius-sm); padding: 0 2px; outline: none; cursor: pointer;
+  }
+  .sb-select:focus { border-color: var(--pe-input-focus-border); }
+
+  /* ---- Color Swatches ---- */
+  .swatch-fg {
+    width: 24px; height: 24px; border-radius: var(--pe-radius-sm);
+    border: 1px solid var(--pe-swatch-border); position: relative; z-index: 2;
+    cursor: pointer;
+  }
+  .swatch-bg {
+    width: 24px; height: 24px; border-radius: var(--pe-radius-sm);
+    border: 1px solid var(--pe-swatch-border); position: absolute; top: 6px; left: 6px; z-index: 1;
+    cursor: pointer;
+  }
+
+  /* ---- Info Row ---- */
+  .info-row {
+    display: flex; align-items: baseline; gap: 4px; margin-bottom: 3px;
+  }
+  .info-row:last-child { margin-bottom: 0; }
+  .info-key {
+    font-size: var(--pe-font-size-sm); color: var(--pe-muted-foreground);
+    min-width: 56px; flex-shrink: 0;
+  }
+  .info-val {
+    font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+    font-family: var(--pe-font-mono);
+  }
+</style>
+
+<!-- ============ APP SHELL ============ -->
+<div data-viewport-mode="app-shell" class="h-screen overflow-hidden min-h-0 flex flex-col">
+
+  <!-- ===== TITLE BAR ===== -->
+  <header style="height:28px;background:var(--pe-titlebar);border-bottom:1px solid var(--pe-tab-border);" class="flex items-center justify-between px-3 shrink-0 select-none">
+    <div class="flex items-center gap-3">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+        <rect x="0.5" y="0.5" width="15" height="15" rx="2.5" fill="#0078D4"/>
+        <path d="M3 12L6.5 5L10 12" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="12" cy="5" r="1.5" fill="white"/>
+      </svg>
+      <span style="font-size:var(--pe-font-size-md);font-weight:600;color:var(--pe-titlebar-fg);letter-spacing:-0.01em;">PixelForge</span>
+      <nav class="flex items-center ml-1">
+        <span class="menu-item">文件</span>
+        <span class="menu-item">编辑</span>
+        <span class="menu-item">图像</span>
+        <span class="menu-item">滤镜</span>
+        <span class="menu-item">视图</span>
+        <span class="menu-item">帮助</span>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2">
+      <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57;display:block;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:#FFBD2E;display:block;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:#28CA41;display:block;"></span>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT AREA ===== -->
+  <div class="flex flex-1 min-h-0">
+
+    <!-- ===== LEFT SIDEBAR (with integrated horizontal tool strip) ===== -->
+    <aside style="width:240px;background:var(--pe-sidebar);border-right:1px solid var(--pe-sidebar-border);" class="flex flex-col shrink-0 min-h-0">
+
+      <!-- Horizontal Tool Strip (replaces activity bar) -->
+      <div style="height:36px;background:var(--pe-toolbar-bg);border-bottom:1px solid var(--pe-sidebar-border);" class="flex items-center gap-1 px-2 shrink-0">
+        <button class="tool-strip-btn active" title="移动工具 (V)">
+          <i data-lucide="move" style="width:16px;height:16px;"></i>
+        </button>
+        <button class="tool-strip-btn" title="裁剪工具 (C)">
+          <i data-lucide="crop" style="width:16px;height:16px;"></i>
+        </button>
+        <button class="tool-strip-btn" title="画笔工具 (B)">
+          <i data-lucide="paintbrush" style="width:16px;height:16px;"></i>
+        </button>
+        <button class="tool-strip-btn" title="橡皮擦 (E)">
+          <i data-lucide="eraser" style="width:16px;height:16px;"></i>
+        </button>
+        <button class="tool-strip-btn" title="文字工具 (T)">
+          <i data-lucide="type" style="width:16px;height:16px;"></i>
+        </button>
+        <button class="tool-strip-btn" title="形状工具 (U)">
+          <i data-lucide="square" style="width:16px;height:16px;"></i>
+        </button>
+        <button class="tool-strip-btn" title="吸管工具 (I)">
+          <i data-lucide="pipette" style="width:16px;height:16px;"></i>
+        </button>
+        <div style="width:1px;height:20px;background:var(--pe-sidebar-border);margin:0 2px;flex-shrink:0;"></div>
+        <button class="tool-strip-zoom" title="放大">
+          <i data-lucide="zoom-in" style="width:14px;height:14px;"></i>
+        </button>
+        <button class="tool-strip-zoom" title="缩小">
+          <i data-lucide="zoom-out" style="width:14px;height:14px;"></i>
+        </button>
+        <button class="tool-strip-zoom" title="适合屏幕">
+          <i data-lucide="maximize" style="width:14px;height:14px;"></i>
+        </button>
+      </div>
+
+      <!-- Layers Panel -->
+      <div class="flex flex-col min-h-0" style="flex:1 1 0;">
+        <div style="height:24px;background:var(--pe-panel-header);border-bottom:1px solid var(--pe-sidebar-border);" class="flex items-center justify-between px-2 shrink-0">
+          <div class="flex items-center gap-1">
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-panel-header-fg);"></i>
+            <span style="font-size:var(--pe-font-size-md);font-weight:600;color:var(--pe-panel-header-fg);">图层</span>
+          </div>
+          <button class="tb-icon-btn" style="width:18px;height:18px;" title="新建图层">
+            <i data-lucide="plus" style="width:14px;height:14px;"></i>
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto pe-scroll" data-scroll-region="primary">
+          <div class="layer-item">
+            <div class="layer-thumb" style="background:repeating-linear-gradient(135deg,rgba(0,0,0,0.15) 0px,rgba(0,0,0,0.15) 3px,transparent 3px,transparent 6px),linear-gradient(135deg,#E8E8E8,#D0D0D0);"></div>
+            <span class="layer-name">调整图层</span>
+            <button class="layer-icon-btn"><i data-lucide="eye" style="width:13px;height:13px;"></i></button>
+            <button class="layer-icon-btn"><i data-lucide="unlock" style="width:13px;height:13px;"></i></button>
+          </div>
+          <div class="layer-item">
+            <div class="layer-thumb" style="background:linear-gradient(135deg,#90A4AE,#B0BEC5);"></div>
+            <span class="layer-name">文字层</span>
+            <button class="layer-icon-btn"><i data-lucide="eye" style="width:13px;height:13px;"></i></button>
+            <button class="layer-icon-btn"><i data-lucide="lock" style="width:13px;height:13px;"></i></button>
+          </div>
+          <div class="layer-item active-layer">
+            <div class="layer-thumb" style="background:linear-gradient(135deg,#FF9800,#FFB74D);"></div>
+            <span class="layer-name" style="font-weight:500;">图层 1</span>
+            <button class="layer-icon-btn"><i data-lucide="eye" style="width:13px;height:13px;"></i></button>
+            <button class="layer-icon-btn"><i data-lucide="unlock" style="width:13px;height:13px;"></i></button>
+          </div>
+          <div class="layer-item">
+            <div class="layer-thumb" style="background:linear-gradient(135deg,#2196F3,#4CAF50);"></div>
+            <span class="layer-name">背景</span>
+            <button class="layer-icon-btn"><i data-lucide="eye" style="width:13px;height:13px;"></i></button>
+            <button class="layer-icon-btn"><i data-lucide="lock" style="width:13px;height:13px;"></i></button>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--pe-sidebar-border);padding:6px 10px;" class="shrink-0">
+          <div class="flex items-center justify-between mb-1">
+            <span style="font-size:var(--pe-font-size-sm);color:var(--pe-sidebar-fg);">不透明度:</span>
+            <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);font-family:var(--pe-font-mono);">85%</span>
+          </div>
+          <input type="range" min="0" max="100" value="85" class="pe-range" style="width:100%;">
+          <div class="flex items-center justify-between mt-2">
+            <span style="font-size:var(--pe-font-size-sm);color:var(--pe-sidebar-fg);">模式:</span>
+            <select class="sb-select">
+              <option selected>正常</option>
+              <option>正片叠底</option>
+              <option>滤色</option>
+              <option>叠加</option>
+              <option>柔光</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resizable separator -->
+      <div style="height:4px;background:var(--pe-sidebar-border);cursor:row-resize;" class="shrink-0"></div>
+
+      <!-- History Panel -->
+      <div class="flex flex-col" style="flex:0 0 200px;min-height:120px;">
+        <div style="height:24px;background:var(--pe-panel-header);border-bottom:1px solid var(--pe-sidebar-border);" class="flex items-center px-2 shrink-0">
+          <div class="flex items-center gap-1">
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-panel-header-fg);"></i>
+            <span style="font-size:var(--pe-font-size-md);font-weight:600;color:var(--pe-panel-header-fg);">历史记录</span>
+          </div>
+        </div>
+        <div class="flex-1 overflow-y-auto pe-scroll" data-scroll-region="primary">
+          <div class="history-item">
+            <span class="history-step">1</span>
+            <span class="history-label">打开文件</span>
+          </div>
+          <div class="history-item">
+            <span class="history-step">2</span>
+            <span class="history-label">裁剪</span>
+          </div>
+          <div class="history-item">
+            <span class="history-step">3</span>
+            <span class="history-label">画笔描边</span>
+          </div>
+          <div class="history-item">
+            <span class="history-step">4</span>
+            <span class="history-label">添加文字</span>
+          </div>
+          <div class="history-item">
+            <span class="history-step">5</span>
+            <span class="history-label">调整亮度</span>
+          </div>
+          <div class="history-item">
+            <span class="history-step">6</span>
+            <span class="history-label">添加图层</span>
+          </div>
+          <div class="history-item">
+            <span class="history-step">7</span>
+            <span class="history-label">合并可见</span>
+          </div>
+          <div class="history-item current-state">
+            <span class="history-step">8</span>
+            <span class="history-label">应用滤镜</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== CENTER AREA ===== -->
+    <div class="flex-1 flex flex-col min-w-0 min-h-0">
+
+      <!-- Tab Bar -->
+      <div style="height:35px;background:var(--pe-tab-inactive-bg);border-bottom:1px solid var(--pe-tab-border);" class="flex items-end shrink-0">
+        <div class="tab-row" style="height:35px;background:var(--pe-tab-active-bg);border-top:2px solid var(--pe-primary);border-right:1px solid var(--pe-tab-border);padding:0 12px;display:flex;align-items:center;gap:6px;position:relative;">
+          <i data-lucide="image" style="width:14px;height:14px;color:var(--pe-tab-active-fg);flex-shrink:0;"></i>
+          <span style="font-size:var(--pe-font-size-md);color:var(--pe-tab-active-fg);white-space:nowrap;">风景照片.jpg</span>
+          <button class="tab-close-btn" style="opacity:0.5;">
+            <i data-lucide="x" style="width:12px;height:12px;color:var(--pe-tab-active-fg);"></i>
+          </button>
+        </div>
+        <div class="tab-row" style="height:34px;background:var(--pe-tab-inactive-bg);border-right:1px solid var(--pe-tab-border);padding:0 12px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <i data-lucide="file-image" style="width:14px;height:14px;color:var(--pe-tab-inactive-fg);flex-shrink:0;"></i>
+          <span style="font-size:var(--pe-font-size-md);color:var(--pe-tab-inactive-fg);white-space:nowrap;">人像精修.psd</span>
+          <button class="tab-close-btn">
+            <i data-lucide="x" style="width:12px;height:12px;color:var(--pe-tab-inactive-fg);"></i>
+          </button>
+        </div>
+        <div style="height:35px;width:35px;display:flex;align-items:center;justify-content:center;cursor:pointer;" title="打开文件">
+          <i data-lucide="plus" style="width:14px;height:14px;color:var(--pe-tab-inactive-fg);"></i>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-2 pr-2 pb-1">
+          <select class="sb-select" style="width:56px;">
+            <option selected>100%</option>
+            <option>75%</option>
+            <option>50%</option>
+            <option>200%</option>
+            <option>适合</option>
+          </select>
+          <button class="tb-icon-btn" title="拆分视图">
+            <i data-lucide="columns-2" style="width:14px;height:14px;color:var(--pe-muted-foreground);"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div style="height:32px;background:var(--pe-toolbar-bg);border-bottom:1px solid var(--pe-toolbar-border);" class="flex items-center gap-3 px-3 shrink-0 overflow-x-auto no-scrollbar">
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);white-space:nowrap;">大小:</span>
+          <input type="range" min="1" max="200" value="24" class="toolbar-range" style="width:72px;">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);font-family:var(--pe-font-mono);min-width:30px;">24px</span>
+        </div>
+        <div style="width:1px;height:16px;background:var(--pe-toolbar-border);flex-shrink:0;"></div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);white-space:nowrap;">硬度:</span>
+          <input type="range" min="0" max="100" value="80" class="toolbar-range" style="width:56px;">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);font-family:var(--pe-font-mono);min-width:26px;">80%</span>
+        </div>
+        <div style="width:1px;height:16px;background:var(--pe-toolbar-border);flex-shrink:0;"></div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);white-space:nowrap;">不透明度:</span>
+          <input type="range" min="0" max="100" value="100" class="toolbar-range" style="width:56px;">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);font-family:var(--pe-font-mono);min-width:30px;">100%</span>
+        </div>
+        <div style="width:1px;height:16px;background:var(--pe-toolbar-border);flex-shrink:0;"></div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);white-space:nowrap;">流量:</span>
+          <input type="range" min="0" max="100" value="85" class="toolbar-range" style="width:56px;">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);font-family:var(--pe-font-mono);min-width:26px;">85%</span>
+        </div>
+        <div style="width:1px;height:16px;background:var(--pe-toolbar-border);flex-shrink:0;"></div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span style="font-size:var(--pe-font-size-sm);color:var(--pe-foreground);white-space:nowrap;">模式:</span>
+          <select class="sb-select">
+            <option selected>正常</option>
+            <option>变暗</option>
+            <option>变亮</option>
+            <option>色相</option>
+            <option>饱和度</option>
+            <option>颜色</option>
+            <option>明度</option>
+          </select>
+        </div>
+        <div style="width:1px;height:16px;background:var(--pe-toolbar-border);flex-shrink:0;"></div>
+        <div class="flex items-center gap-0 ml-auto flex-shrink-0">
+          <button class="tb-icon-btn" title="撤销 (Ctrl+Z)">
+            <i data-lucide="undo-2" style="width:14px;height:14px;"></i>
+          </button>
+          <button class="tb-icon-btn" title="重做 (Ctrl+Shift+Z)">
+            <i data-lucide="redo-2" style="width:14px;height:14px;"></i>
+          </button>
+          <button class="tb-icon-btn" title="重置画笔">
+            <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Canvas Area -->
+      <div class="flex-1 min-h-0 overflow-hidden flex" style="background:var(--pe-canvas-bg);">
+        <div class="ruler-v" style="width:20px;flex-shrink:0;">
+          <div style="width:20px;height:20px;background:#D4D4D4;position:absolute;top:0;left:0;z-index:1;"></div>
+          <div class="ruler-ticks-v"></div>
+          <div class="ruler-ticks-v-fine"></div>
+          <span class="ruler-num" style="top:23px;left:2px;">0</span>
+          <span class="ruler-num" style="top:73px;left:1px;">100</span>
+          <span class="ruler-num" style="top:123px;left:0px;">200</span>
+          <span class="ruler-num" style="top:173px;left:0px;">300</span>
+          <span class="ruler-num" style="top:223px;left:0px;">400</span>
+        </div>
+        <div class="flex-1 flex flex-col min-w-0 min-h-0">
+          <div class="ruler-h" style="height:20px;flex-shrink:0;">
+            <div class="ruler-ticks-h"></div>
+            <div class="ruler-ticks-h-fine"></div>
+            <span class="ruler-num" style="top:5px;left:22px;">0</span>
+            <span class="ruler-num" style="top:5px;left:69px;">100</span>
+            <span class="ruler-num" style="top:5px;left:117px;">200</span>
+            <span class="ruler-num" style="top:5px;left:165px;">300</span>
+            <span class="ruler-num" style="top:5px;left:213px;">400</span>
+            <span class="ruler-num" style="top:5px;left:261px;">500</span>
+            <span class="ruler-num" style="top:5px;left:309px;">600</span>
+            <span class="ruler-num" style="top:5px;left:357px;">700</span>
+            <span class="ruler-num" style="top:5px;left:405px;">800</span>
+            <span class="ruler-num" style="top:5px;left:453px;">900</span>
+            <span class="ruler-num" style="top:5px;left:498px;">1000</span>
+          </div>
+          <div class="flex-1 min-h-0 overflow-hidden flex items-center justify-center checkerboard-bg">
+            <div style="position:relative;display:inline-block;max-width:68%;max-height:88%;">
+              <img src="../assets/image_0_yi19x4.jpg" alt="风景照片" style="display:block;width:100%;height:100%;object-fit:contain;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+              <div class="selection-rect" style="top:18%;left:22%;width:42%;height:48%;">
+                <div class="sel-handle" style="top:-3px;left:-3px;"></div>
+                <div class="sel-handle" style="top:-3px;right:-3px;"></div>
+                <div class="sel-handle" style="bottom:-3px;left:-3px;"></div>
+                <div class="sel-handle" style="bottom:-3px;right:-3px;"></div>
+                <div class="sel-handle" style="top:-3px;left:50%;margin-left:-3px;"></div>
+                <div class="sel-handle" style="bottom:-3px;left:50%;margin-left:-3px;"></div>
+                <div class="sel-handle" style="left:-3px;top:50%;margin-top:-3px;"></div>
+                <div class="sel-handle" style="right:-3px;top:50%;margin-top:-3px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RIGHT SIDEBAR ===== -->
+    <aside style="width:260px;background:var(--pe-sidebar);border-left:1px solid var(--pe-sidebar-border);" class="flex flex-col shrink-0 min-h-0">
+      <div style="height:24px;background:var(--pe-panel-header);border-bottom:1px solid var(--pe-sidebar-border);" class="flex items-center px-2 shrink-0">
+        <div class="flex items-center gap-1">
+          <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-panel-header-fg);"></i>
+          <span style="font-size:var(--pe-font-size-md);font-weight:600;color:var(--pe-panel-header-fg);">属性</span>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto pe-scroll" data-scroll-region="primary">
+
+        <div class="prop-section">
+          <div class="prop-section-header">
+            <span>变换</span>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-muted-foreground);"></i>
+          </div>
+          <div class="prop-section-content">
+            <div class="flex items-start gap-3">
+              <div class="flex flex-col gap-1 flex-1">
+                <div class="prop-row">
+                  <span class="prop-label">X:</span>
+                  <input type="number" value="120" class="prop-input">
+                  <span style="font-size:var(--pe-font-size-sm);color:var(--pe-muted-foreground);">px</span>
+                </div>
+                <div class="prop-row">
+                  <span class="prop-label">Y:</span>
+                  <input type="number" value="85" class="prop-input">
+                  <span style="font-size:var(--pe-font-size-sm);color:var(--pe-muted-foreground);">px</span>
+                </div>
+              </div>
+              <div style="width:1px;align-self:stretch;background:var(--pe-sidebar-border);margin:0 4px;"></div>
+              <div class="flex flex-col gap-1 flex-1">
+                <div class="prop-row">
+                  <span class="prop-label">W:</span>
+                  <input type="number" value="1920" class="prop-input" style="width:52px;">
+                  <span style="font-size:var(--pe-font-size-sm);color:var(--pe-muted-foreground);">px</span>
+                </div>
+                <div class="prop-row">
+                  <span class="prop-label">H:</span>
+                  <input type="number" value="1280" class="prop-input" style="width:52px;">
+                  <span style="font-size:var(--pe-font-size-sm);color:var(--pe-muted-foreground);">px</span>
+                </div>
+              </div>
+              <button class="tb-icon-btn" style="margin-top:4px;flex-shrink:0;" title="锁定比例">
+                <i data-lucide="link" style="width:14px;height:14px;color:var(--pe-icon-active-color);"></i>
+              </button>
+            </div>
+            <div class="prop-row" style="margin-top:6px;">
+              <span class="prop-label">旋转:</span>
+              <input type="number" value="0.0" step="0.1" class="prop-input" style="width:48px;">
+              <span style="font-size:var(--pe-font-size-sm);color:var(--pe-muted-foreground);">deg</span>
+              <div class="flex-1"></div>
+              <button class="prop-link-btn">重置</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-section">
+          <div class="prop-section-header">
+            <span>调整</span>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-muted-foreground);"></i>
+          </div>
+          <div class="prop-section-content">
+            <div class="prop-row">
+              <span class="prop-label" style="min-width:36px;">亮度</span>
+              <input type="range" min="-100" max="100" value="-5" class="pe-range" style="flex:1;">
+              <span class="prop-value">-5</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-label" style="min-width:36px;">对比度</span>
+              <input type="range" min="-100" max="100" value="12" class="pe-range" style="flex:1;">
+              <span class="prop-value">+12</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-label" style="min-width:36px;">饱和度</span>
+              <input type="range" min="-100" max="100" value="8" class="pe-range" style="flex:1;">
+              <span class="prop-value">+8</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-label" style="min-width:36px;">色温</span>
+              <input type="range" min="-100" max="100" value="3" class="pe-range" style="flex:1;">
+              <span class="prop-value">+3</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-section">
+          <div class="prop-section-header">
+            <span>色彩</span>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-muted-foreground);"></i>
+          </div>
+          <div class="prop-section-content">
+            <div class="flex items-center gap-3 mb-3">
+              <div style="position:relative;width:30px;height:30px;flex-shrink:0;">
+                <div class="swatch-fg" style="background:#000000;"></div>
+                <div class="swatch-bg" style="background:#FFFFFF;"></div>
+              </div>
+              <button class="tb-icon-btn" style="flex-shrink:0;" title="交换前景/背景色">
+                <i data-lucide="repeat" style="width:14px;height:14px;color:var(--pe-muted-foreground);"></i>
+              </button>
+              <input type="text" value="#1A237E" class="prop-input" style="width:76px;font-family:var(--pe-font-mono);text-align:left;padding-left:4px;">
+            </div>
+            <div class="flex items-center gap-4 mb-1" style="font-size:var(--pe-font-size-sm);font-family:var(--pe-font-mono);color:var(--pe-foreground);">
+              <span>R: <strong style="color:var(--pe-danger);">26</strong></span>
+              <span>G: <strong style="color:var(--pe-success);">35</strong></span>
+              <span>B: <strong style="color:var(--pe-info);">126</strong></span>
+            </div>
+            <div class="flex items-center gap-3" style="font-size:var(--pe-font-size-sm);font-family:var(--pe-font-mono);color:var(--pe-foreground);">
+              <span>H: <strong>234</strong></span>
+              <span>S: <strong>66%</strong></span>
+              <span>L: <strong>30%</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-section">
+          <div class="prop-section-header">
+            <span>信息</span>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--pe-muted-foreground);"></i>
+          </div>
+          <div class="prop-section-content">
+            <div class="info-row">
+              <span class="info-key">文件</span>
+              <span class="info-val">风景照片.jpg</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">尺寸</span>
+              <span class="info-val">1920 x 1280</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">分辨率</span>
+              <span class="info-val">300 DPI</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">色彩模式</span>
+              <span class="info-val">RGB / 8 bit</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">文件大小</span>
+              <span class="info-val">4.2 MB</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ===== STATUS BAR ===== -->
+  <footer style="height:22px;background:var(--pe-statusbar);border-top:1px solid rgba(0,122,204,0.3);" class="flex items-center justify-between px-3 shrink-0 select-none">
+    <div class="flex items-center gap-4">
+      <span style="font-size:var(--pe-font-size-sm);color:var(--pe-statusbar-fg);">就绪</span>
+      <span style="font-size:var(--pe-font-size-sm);color:var(--pe-statusbar-fg);">画笔工具</span>
+    </div>
+    <span style="font-size:var(--pe-font-size-sm);color:var(--pe-statusbar-fg);">1920 x 1280 px</span>
+    <div class="flex items-center gap-4">
+      <span style="font-size:var(--pe-font-size-sm);color:var(--pe-statusbar-fg);">100%</span>
+      <span style="font-size:var(--pe-font-size-sm);color:var(--pe-statusbar-fg);">RGB</span>
+      <span style="font-size:var(--pe-font-size-sm);color:var(--pe-statusbar-fg);">1.2 GB / 8 GB</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

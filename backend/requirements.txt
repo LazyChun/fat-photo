@@ -1,0 +1,9 @@
+# Add your plugin's Python dependencies here, one per line.
+# These will be installed based on your depsStrategy setting in plugin.json:
+#   - "vendor": Dependencies are bundled into dist/backend/vendor/ at build time.
+#   - "install": Dependencies are installed by the host on first plugin activation.
+#
+# Examples:
+# requests>=2.28
+# beautifulsoup4>=4.12
+# httpx>=0.24

@@ -1,0 +1,15 @@
+export default {
+  "common.ok": "确定",
+  "common.cancel": "取消",
+  "common.save": "保存",
+  "common.refresh": "刷新",
+  "common.close": "关闭",
+  "common.back": "返回",
+  "common.new": "新建",
+  "common.create": "创建",
+  "common.edit": "编辑",
+  "common.delete": "删除",
+  "common.all": "全部",
+  "menu.home": "首页",
+  "photo.title": "肥图",
+};

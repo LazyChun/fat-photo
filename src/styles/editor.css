@@ -1,0 +1,478 @@
+/*
+ * fat-photo 编辑器全局样式
+ * - 设计令牌 (--pe-*) 与设计稿完全一致
+ * - 组件类为全局类(非 CSS module)，供两个页面共享
+ * 仅在 .pe-editor 根作用域下生效，避免污染宿主 UI
+ */
+.pe-editor,
+.pe-editor * {
+  box-sizing: border-box;
+}
+
+.pe-editor {
+  /* Brand prefix: pe */
+  --pe-background: #FFFFFF;
+  --pe-foreground: #333333;
+  --pe-card: #F3F3F3;
+  --pe-card-foreground: #1E1E1E;
+  --pe-popover: #FFFFFF;
+  --pe-popover-foreground: #1E1E1E;
+  --pe-primary: #0078D4;
+  --pe-primary-foreground: #FFFFFF;
+  --pe-muted: #E8E8E8;
+  --pe-muted-foreground: #616161;
+  --pe-border: #E0E0E0;
+  --pe-input: #F3F3F3;
+  --pe-ring: #0078D4;
+  --pe-radius-sm: 2px;
+  --pe-radius-md: 4px;
+  --pe-radius-lg: 6px;
+
+  /* Editor chrome */
+  --pe-activitybar: #2C2C2C;
+  --pe-activitybar-fg: #FFFFFF;
+  --pe-activitybar-active: #FFFFFF;
+  --pe-sidebar: #F3F3F3;
+  --pe-sidebar-fg: #333333;
+  --pe-sidebar-border: #E0E0E0;
+  --pe-tab-active-bg: #FFFFFF;
+  --pe-tab-inactive-bg: #ECECEC;
+  --pe-tab-active-fg: #333333;
+  --pe-tab-inactive-fg: #808080;
+  --pe-tab-border: #E0E0E0;
+  --pe-statusbar: #007ACC;
+  --pe-statusbar-fg: #FFFFFF;
+  --pe-titlebar: #DDDDDD;
+  --pe-titlebar-fg: #333333;
+  --pe-panel-header: #E8E8E8;
+  --pe-panel-header-fg: #333333;
+  --pe-toolbar-bg: #F8F8F8;
+  --pe-toolbar-border: #E0E0E0;
+  --pe-canvas-bg: #E0E0E0;
+  --pe-canvas-checkerboard-a: #FFFFFF;
+  --pe-canvas-checkerboard-b: #E8E8E8;
+  --pe-selection: #ADD6FF;
+  --pe-selection-border: #0078D4;
+  --pe-hover: rgba(0, 120, 212, 0.08);
+  --pe-active: rgba(0, 120, 212, 0.15);
+  --pe-badge: #0078D4;
+  --pe-badge-fg: #FFFFFF;
+  --pe-scrollbar-thumb: rgba(121, 121, 121, 0.4);
+  --pe-scrollbar-track: transparent;
+  --pe-focus-border: #0078D4;
+  --pe-widget-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.12);
+  --pe-menu-bg: #FFFFFF;
+  --pe-menu-border: #E0E0E0;
+  --pe-menu-hover: #E8E8E8;
+  --pe-menu-separator: #E0E0E0;
+  --pe-input-border: #E0E0E0;
+  --pe-input-focus-border: #0078D4;
+  --pe-slider-track: #E0E0E0;
+  --pe-slider-thumb: #0078D4;
+  --pe-swatch-border: #C0C0C0;
+  --pe-icon-color: #616161;
+  --pe-icon-active-color: #0078D4;
+  --pe-danger: #D32F2F;
+  --pe-warning: #E8A317;
+  --pe-success: #388E3C;
+  --pe-info: #0078D4;
+
+  /* Typography */
+  --pe-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', Roboto, Helvetica, Arial, sans-serif;
+  --pe-font-mono: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', monospace;
+  --pe-font-size-xs: 10px;
+  --pe-font-size-sm: 11px;
+  --pe-font-size-base: 12px;
+  --pe-font-size-md: 13px;
+  --pe-font-size-lg: 14px;
+  --pe-font-size-xl: 16px;
+  --pe-font-size-2xl: 20px;
+  --pe-line-height-tight: 1.2;
+  --pe-line-height-normal: 1.4;
+
+  background: var(--pe-background);
+  color: var(--pe-foreground);
+  font-family: var(--pe-font-sans);
+  font-size: var(--pe-font-size-md);
+  height: 100%;
+  width: 100%;
+}
+
+.pe-editor .no-scrollbar::-webkit-scrollbar { display: none; }
+.pe-editor .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ---- Tool Strip Buttons (horizontal toolbar in left sidebar) ---- */
+.pe-editor .tool-strip-btn {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: var(--pe-radius-sm);
+  cursor: pointer; color: var(--pe-icon-color);
+  transition: background 0.1s, color 0.1s;
+  position: relative;
+}
+.pe-editor .tool-strip-btn:hover { background: var(--pe-hover); color: var(--pe-icon-active-color); }
+.pe-editor .tool-strip-btn.active { background: var(--pe-active); color: var(--pe-icon-active-color); }
+
+/* ---- Tool Group Flyout (Photoshop-style tool group submenu) ---- */
+.pe-editor .tool-flyout {
+  background: var(--pe-menu-bg);
+  border: 1px solid var(--pe-menu-border);
+  border-radius: var(--pe-radius-sm);
+  box-shadow: var(--pe-widget-shadow);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 100;
+}
+.pe-editor .tool-flyout-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 8px;
+  background: transparent; border: none; border-radius: var(--pe-radius-sm);
+  cursor: pointer; color: var(--pe-foreground);
+  font-size: var(--pe-font-size-md);
+  text-align: left;
+  white-space: nowrap;
+  min-width: 140px;
+}
+.pe-editor .tool-flyout-item:hover { background: var(--pe-menu-hover); }
+.pe-editor .tool-flyout-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.pe-editor .tool-flyout-item:disabled:hover { background: transparent; }
+.pe-editor .tool-flyout-item.active { color: var(--pe-icon-active-color); font-weight: 500; }
+.pe-editor .tool-flyout-item span { flex: 1; }
+.pe-editor .tool-flyout-shortcut {
+  flex: 0 0 auto !important;
+  font-size: var(--pe-font-size-sm);
+  color: var(--pe-muted-foreground);
+  font-family: var(--pe-font-mono);
+}
+.pe-editor .tool-flyout-item.active .tool-flyout-shortcut { color: var(--pe-icon-active-color); }
+
+/* ---- Tool Group Arrow (small triangle on grouped tool buttons) ---- */
+.pe-editor .tool-strip-group-arrow {
+  pointer-events: auto;
+  border-top-left-radius: var(--pe-radius-sm);
+}
+.pe-editor .tool-strip-group-arrow:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* ---- Tool Strip Zoom Buttons (smaller variant) ---- */
+.pe-editor .tool-strip-zoom {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: var(--pe-radius-sm);
+  cursor: pointer; color: var(--pe-icon-color);
+  transition: background 0.1s, color 0.1s;
+}
+.pe-editor .tool-strip-zoom:hover { background: var(--pe-hover); color: var(--pe-icon-active-color); }
+
+/* ---- Layer Items ---- */
+.pe-editor .layer-item {
+  height: 36px; display: flex; align-items: center; gap: 6px;
+  padding: 0 8px; cursor: pointer;
+  border-left: 2px solid transparent;
+  border-bottom: 1px solid var(--pe-sidebar-border);
+  transition: background 0.1s;
+}
+.pe-editor .layer-item:hover { background: var(--pe-hover); }
+.pe-editor .layer-item.active-layer {
+  border-left-color: var(--pe-primary);
+  background: var(--pe-hover);
+}
+.pe-editor .layer-thumb {
+  width: 28px; height: 28px; border-radius: var(--pe-radius-sm); flex-shrink: 0;
+  border: 1px solid var(--pe-swatch-border);
+}
+.pe-editor .layer-name {
+  flex: 1; font-size: var(--pe-font-size-md); color: var(--pe-sidebar-fg);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pe-editor .layer-icon-btn {
+  width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--pe-muted-foreground); opacity: 0.7; flex-shrink: 0;
+  padding: 0;
+}
+.pe-editor .layer-icon-btn:hover { opacity: 1; color: var(--pe-icon-active-color); }
+.pe-editor .layer-icon-btn.hidden-eye { opacity: 0.3; }
+
+/* ---- Layer Drag & Drop ---- */
+.pe-editor .layer-item { user-select: none; -webkit-user-select: none; }
+.pe-editor .layer-item.layer-dragging {
+  opacity: 0.4;
+  background: var(--pe-hover);
+}
+/* 放置指示线: 在条目上/下边显示高亮线, 与现有 border-left 高亮色保持一致 */
+.pe-editor .layer-item.layer-drop-before {
+  box-shadow: 0 -2px 0 0 var(--pe-primary) inset, 0 -2px 0 0 var(--pe-primary);
+}
+.pe-editor .layer-item.layer-drop-after {
+  box-shadow: 0 2px 0 0 var(--pe-primary) inset, 0 2px 0 0 var(--pe-primary);
+}
+
+/* ---- History Items ---- */
+.pe-editor .history-item {
+  height: 26px; display: flex; align-items: center; gap: 6px;
+  padding: 0 10px; cursor: pointer;
+  border-bottom: 1px solid var(--pe-sidebar-border);
+  transition: background 0.1s;
+}
+.pe-editor .history-item:hover { background: var(--pe-hover); }
+.pe-editor .history-item.current-state {
+  background: var(--pe-active);
+  color: var(--pe-icon-active-color);
+}
+.pe-editor .history-step {
+  font-size: var(--pe-font-size-sm); color: var(--pe-muted-foreground);
+  min-width: 18px; text-align: right; font-family: var(--pe-font-mono);
+}
+.pe-editor .history-item.current-state .history-step { color: var(--pe-icon-active-color); }
+.pe-editor .history-label {
+  font-size: var(--pe-font-size-md); color: var(--pe-sidebar-fg);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pe-editor .history-item.current-state .history-label { color: var(--pe-icon-active-color); font-weight: 500; }
+
+/* ---- Property Section ---- */
+.pe-editor .prop-section {
+  border-bottom: 1px solid var(--pe-sidebar-border);
+}
+.pe-editor .prop-section-header {
+  height: 26px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 10px; background: var(--pe-panel-header);
+  border-bottom: 1px solid var(--pe-sidebar-border);
+  cursor: pointer; user-select: none;
+}
+.pe-editor .prop-section-header span {
+  font-size: var(--pe-font-size-md); font-weight: 600; color: var(--pe-panel-header-fg);
+}
+.pe-editor .prop-section-content { padding: 8px 10px; }
+.pe-editor .prop-row {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+}
+.pe-editor .prop-row:last-child { margin-bottom: 0; }
+.pe-editor .prop-label {
+  font-size: var(--pe-font-size-sm); color: var(--pe-muted-foreground);
+  min-width: 28px; text-align: right; flex-shrink: 0;
+}
+.pe-editor .prop-value {
+  font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+  min-width: 32px; font-family: var(--pe-font-mono);
+}
+.pe-editor .prop-input {
+  width: 56px; height: 20px; font-size: var(--pe-font-size-sm);
+  font-family: var(--pe-font-mono); color: var(--pe-foreground);
+  background: var(--pe-background); border: 1px solid var(--pe-input-border);
+  border-radius: var(--pe-radius-sm); padding: 0 4px; outline: none;
+  text-align: right;
+}
+.pe-editor .prop-input:focus { border-color: var(--pe-input-focus-border); }
+.pe-editor .prop-select {
+  height: 20px; font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+  background: var(--pe-background); border: 1px solid var(--pe-input-border);
+  border-radius: var(--pe-radius-sm); padding: 0 2px; outline: none;
+  cursor: pointer;
+}
+.pe-editor .prop-select:focus { border-color: var(--pe-input-focus-border); }
+.pe-editor .prop-link-btn {
+  font-size: var(--pe-font-size-sm); color: var(--pe-icon-active-color);
+  background: none; border: none; cursor: pointer; text-decoration: none;
+  padding: 0 2px;
+}
+.pe-editor .prop-link-btn:hover { text-decoration: underline; }
+
+/* ---- Range Slider ---- */
+.pe-editor .pe-range {
+  -webkit-appearance: none; appearance: none;
+  height: 4px; background: var(--pe-slider-track); border-radius: 2px;
+  outline: none; cursor: pointer;
+}
+.pe-editor .pe-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--pe-slider-thumb); border: none; cursor: pointer;
+}
+.pe-editor .pe-range::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--pe-slider-thumb); border: none; cursor: pointer;
+}
+
+/* ---- Toolbar Range (compact) ---- */
+.pe-editor .toolbar-range {
+  -webkit-appearance: none; appearance: none;
+  height: 3px; background: var(--pe-slider-track); border-radius: 1px;
+  outline: none; cursor: pointer;
+}
+.pe-editor .toolbar-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--pe-slider-thumb); border: none; cursor: pointer;
+}
+.pe-editor .toolbar-range::-moz-range-thumb {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--pe-slider-thumb); border: none; cursor: pointer;
+}
+
+/* ---- Checkerboard Canvas ---- */
+.pe-editor .checkerboard-bg {
+  background-color: var(--pe-canvas-checkerboard-b);
+  background-image:
+    linear-gradient(45deg, var(--pe-canvas-checkerboard-a) 25%, transparent 25%, transparent 75%, var(--pe-canvas-checkerboard-a) 75%),
+    linear-gradient(45deg, var(--pe-canvas-checkerboard-a) 25%, transparent 25%, transparent 75%, var(--pe-canvas-checkerboard-a) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
+
+/* ---- Selection Rectangle ---- */
+.pe-editor .selection-rect {
+  position: absolute;
+  border: 1px dashed var(--pe-selection-border);
+  background: transparent;
+  /* 选区外铺一层半透明遮罩，提示这部分将被裁掉；选区内保持透明可见 */
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  animation: pe-march 0.6s linear infinite;
+}
+@keyframes pe-march {
+  to { border-dash-offset: 16px; }
+}
+.pe-editor .sel-handle {
+  position: absolute; width: 7px; height: 7px;
+  background: #FFFFFF; border: 1px solid var(--pe-selection-border);
+}
+
+/* ---- Ruler ---- */
+.pe-editor .ruler-h, .pe-editor .ruler-v {
+  position: relative; overflow: hidden;
+  background: #D4D4D4;
+}
+.pe-editor .ruler-h { border-bottom: 1px solid var(--pe-sidebar-border); }
+.pe-editor .ruler-v { border-right: 1px solid var(--pe-sidebar-border); }
+.pe-editor .ruler-ticks-h {
+  position: absolute; top: 0; left: 20px; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px,
+    transparent 1px, transparent 50px
+  );
+}
+.pe-editor .ruler-ticks-h-fine {
+  position: absolute; top: 8px; left: 20px; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px,
+    transparent 1px, transparent 10px
+  );
+}
+.pe-editor .ruler-ticks-v {
+  position: absolute; top: 20px; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px,
+    transparent 1px, transparent 50px
+  );
+}
+.pe-editor .ruler-ticks-v-fine {
+  position: absolute; top: 20px; left: 8px; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px,
+    transparent 1px, transparent 10px
+  );
+}
+.pe-editor .ruler-num {
+  position: absolute; font-size: 8px; color: var(--pe-muted-foreground);
+  font-family: var(--pe-font-mono); user-select: none; pointer-events: none;
+}
+
+/* ---- Menu Items ---- */
+.pe-editor .menu-item {
+  font-size: var(--pe-font-size-md); color: var(--pe-titlebar-fg);
+  padding: 2px 8px; border-radius: var(--pe-radius-sm); cursor: pointer;
+  user-select: none; transition: background 0.1s;
+}
+.pe-editor .menu-item:hover { background: var(--pe-hover); }
+
+/* ---- Tab close btn ---- */
+.pe-editor .tab-close-btn {
+  width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: var(--pe-radius-sm);
+  cursor: pointer; opacity: 0;
+  transition: opacity 0.1s, background 0.1s;
+  padding: 0;
+}
+.pe-editor .tab-close-btn:hover { background: var(--pe-muted); }
+.pe-editor .tab-row:hover .tab-close-btn { opacity: 1; }
+
+/* ---- Toolbar icon button ---- */
+.pe-editor .tb-icon-btn {
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: var(--pe-radius-sm);
+  cursor: pointer; color: var(--pe-icon-color);
+  transition: background 0.1s, color 0.1s;
+  padding: 0;
+}
+.pe-editor .tb-icon-btn:hover { background: var(--pe-hover); color: var(--pe-icon-active-color); }
+
+/* ---- Scrollbar ---- */
+.pe-editor .pe-scroll::-webkit-scrollbar { width: 8px; }
+.pe-editor .pe-scroll::-webkit-scrollbar-track { background: var(--pe-scrollbar-track); }
+.pe-editor .pe-scroll::-webkit-scrollbar-thumb { background: var(--pe-scrollbar-thumb); border-radius: 4px; }
+.pe-editor .pe-scroll::-webkit-scrollbar-thumb:hover { background: rgba(121,121,121,0.6); }
+.pe-editor .pe-scroll { scrollbar-width: thin; scrollbar-color: var(--pe-scrollbar-thumb) var(--pe-scrollbar-track); }
+
+/* ---- Sidebar toolbar select ---- */
+.pe-editor .sb-select {
+  height: 18px; font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+  background: var(--pe-background); border: 1px solid var(--pe-input-border);
+  border-radius: var(--pe-radius-sm); padding: 0 2px; outline: none; cursor: pointer;
+}
+.pe-editor .sb-select:focus { border-color: var(--pe-input-focus-border); }
+
+/* ---- Color Swatches ---- */
+.pe-editor .swatch-fg {
+  width: 24px; height: 24px; border-radius: var(--pe-radius-sm);
+  border: 1px solid var(--pe-swatch-border); position: relative; z-index: 2;
+  cursor: pointer;
+}
+.pe-editor .swatch-bg {
+  width: 24px; height: 24px; border-radius: var(--pe-radius-sm);
+  border: 1px solid var(--pe-swatch-border); position: absolute; top: 6px; left: 6px; z-index: 1;
+  cursor: pointer;
+}
+/* 透明覆盖在 swatch 之上，让浏览器原生颜色选择器在用户点击时正常弹出
+ * 不用 .click() 编程触发，因为部分场景下会丢失 user activation */
+.pe-editor .pe-color-input {
+  position: absolute;
+  width: 24px; height: 24px;
+  padding: 0; margin: 0; border: none;
+  background: transparent;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.pe-editor .pe-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+.pe-editor .pe-color-input::-webkit-color-swatch { border: none; }
+.pe-editor .pe-color-input::-moz-color-swatch { border: none; }
+.pe-editor .pe-color-input-fg { top: 0; left: 0; z-index: 4; }
+.pe-editor .pe-color-input-bg { top: 6px; left: 6px; z-index: 3; }
+
+/* ---- Info Row ---- */
+.pe-editor .info-row {
+  display: flex; align-items: baseline; gap: 4px; margin-bottom: 3px;
+}
+.pe-editor .info-row:last-child { margin-bottom: 0; }
+.pe-editor .info-key {
+  font-size: var(--pe-font-size-sm); color: var(--pe-muted-foreground);
+  min-width: 56px; flex-shrink: 0;
+}
+.pe-editor .info-val {
+  font-size: var(--pe-font-size-sm); color: var(--pe-foreground);
+  font-family: var(--pe-font-mono);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  min-width: 0; flex: 1;
+}

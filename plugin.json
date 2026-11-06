@@ -1,0 +1,30 @@
+{
+  "id": "8a7b6c5d-4321-fedc-ba98-76543210fedc",
+  "name": "fat-photo",
+  "version": "0.1.0",
+  "description": "A FatNotes bespoke plugin.",
+  "entry": "remoteEntry.js",
+  "mfName": "plugin_8a7b6c5d_4321_fedc_ba98_76543210fedc",
+  "container": "plugin_8a7b6c5d_4321_fedc_ba98_76543210fedc",
+  "exposed": "./plugin",
+  "contributions": {
+    "activityBar": true,
+    "primarySidebar": true,
+    "panel": true,
+    "footer": true,
+    "routes": true,
+    "widgetTypes": true
+  },
+  "permissions": [
+    "auth:read",
+    "dataSource:read",
+    "query:execute",
+    "mutation:execute"
+  ],
+  "backend": {
+    "enabled": true,
+    "entry": "backend/main.py",
+    "requirements": "backend/requirements.txt",
+    "depsStrategy": "vendor"
+  }
+}

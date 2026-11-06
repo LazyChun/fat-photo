@@ -1,0 +1,43 @@
+{
+  "name": "fat-photo",
+  "version": "0.1.0",
+  "description": "FatNotes bespoke plugin: fat-photo",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "preview": "webpack serve --config webpack.preview.js"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.460.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@module-federation/enhanced": "^0.7.0",
+    "@types/lodash": "^4.17.24",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "ahooks": "^3.8.1",
+    "antd": "6.3.1",
+    "classnames": "^2.5.1",
+    "css-loader": "^7.1.4",
+    "html-webpack-plugin": "^5.6.0",
+    "less": "^4.6.4",
+    "less-loader": "^13.0.0",
+    "react-intl": "6.8.4",
+    "react-redux": "9.1.2",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.6"
+  },
+  "peerDependencies": {
+    "antd": "6.x",
+    "react-intl": "6.x",
+    "react-redux": "9.x"
+  }
+}
